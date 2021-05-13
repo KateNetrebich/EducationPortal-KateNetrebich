@@ -1,20 +1,7 @@
 {
   "k": {
-    "Id": 0,
     "Username": "k",
-    "PasswordHash": "$2a$11$LnBVS1m6g7Zyu5JfbCYrmOmNTngIx8pKIOHUsPJ4Wsie1dxplgD.a",
-    "Role": "student"
-  },
-  "l": {
-    "Id": 0,
-    "Username": "l",
-    "PasswordHash": "$2a$11$pEXvlRJtPb4XtmQIfb6sW.8sOkTOMHlmZXGqpgMt5R12uoUdXU.e2",
-    "Role": "student"
-  },
-  "к": {
-    "Id": 0,
-    "Username": "к",
-    "PasswordHash": "$2a$11$CbLHAHGwEoSMtKEviLrwYOa6dvJ/kS/J2CPwUh/36XvTlgbi45ATm",
+    "PasswordHash": "$2a$11$KuHb9uUZNKnKrb2v9RrlD.b7T/We4Pr1dyG5QfB2Dtxb.0gCGeOqG",
     "Role": "student"
   }
 }
