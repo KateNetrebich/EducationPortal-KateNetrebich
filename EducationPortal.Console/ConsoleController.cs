@@ -1,16 +1,19 @@
-﻿using EducationPortal.Models;
-using EducationPortal.Repositories.FileRepository;
+﻿using EducationPortal.Application.Service;
+using EducationPortal.Models;
 using System;
 
-namespace EducationPortal.ConsoleApp
+namespace EducationPortal.Presentation
 {
-    public class AuthController
+    public class ConsoleController
     {
-        private const string SavingDir = "D:\\NIX Education\\EducationPortal\\OutputResults";
-        static UserJsonRepository _repository = new UserJsonRepository(SavingDir + "\\users.json");
-        static void Main(string[] args)
+        private IAuthService authService;
+        public ConsoleController(IAuthService service)
         {
-            _repository.Import();
+            authService = service;
+        }
+        public void Process()
+        {
+
             User currentUser = null;
             while (true)
             {
@@ -25,12 +28,11 @@ namespace EducationPortal.ConsoleApp
                 {
                     case "1":
                         var registration = Registration();
-                        _repository.Register(registration);
-                        _repository.Export();
+                        authService.Register(registration);
                         break;
                     case "2":
                         var signIn = GetSignInInformation();
-                         currentUser = _repository.SignIn(signIn);
+                        currentUser = authService.SignIn(signIn);
                         break;
                     case "3":
                         if (currentUser == null)
@@ -45,10 +47,7 @@ namespace EducationPortal.ConsoleApp
                 }
             }
         }
-
-        
-
-        public static RegisterRequest Registration()
+        private RegisterRequest Registration()
         {
             RegisterRequest user = new RegisterRequest();
             Console.WriteLine("Input Username");
@@ -60,26 +59,25 @@ namespace EducationPortal.ConsoleApp
             return user;
         }
 
-        public static SignInRequest GetSignInInformation()
-        { 
+        private SignInRequest GetSignInInformation()
+        {
             Console.WriteLine("Input UserName");
             var name = Console.ReadLine();
             Console.WriteLine("Input Password");
             var password = Console.ReadLine();
-            if(name == null)
+            if (name == null)
             {
                 throw new Exception("Username is empty");
             }
-            if(password == null)
+            if (password == null)
             {
                 throw new Exception("Password is empty");
             }
-            return new SignInRequest {
-                Username = name,    
+            return new SignInRequest
+            {
+                Username = name,
                 Password = password
             };
         }
-
     }
 }
-    
