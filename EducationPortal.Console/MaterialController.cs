@@ -72,10 +72,25 @@ namespace EducationPortal.Presentation
             Console.WriteLine("Input Author");
             request.Author = Console.ReadLine();
             Console.WriteLine("Input Pages Number");
-            request.PageNumber = Console.Read();
+            request.PageNumber = GetIntInput();
             Console.WriteLine("Input Year of publication");
-            request.YearOfPublication = Console.Read();
+            request.YearOfPublication = GetIntInput();
             return _service.CreateMaterial(request);
+        }
+
+        private int GetIntInput()
+        {
+            if (int.TryParse(Console.ReadLine(), out var input))
+            {
+                return input;
+            }
+            else
+            {
+                Console.WriteLine();
+                Console.WriteLine("Incorrect input, try again");
+                Console.WriteLine();
+                return GetIntInput();
+            }
         }
     }
 }

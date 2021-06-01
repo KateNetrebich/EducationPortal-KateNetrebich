@@ -51,7 +51,7 @@ namespace EducationPortal.Presentation
             for (int i = 0; i < materials.Count; i++)
             {
                 var item = materials[i];
-                Console.WriteLine($"{i}. {item.Name}");
+                Console.WriteLine($"{i+1}. {item.Name}");
             }
         }
 

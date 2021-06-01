@@ -17,7 +17,7 @@ namespace EducationPortal.Presentation
         {
             while (true)
             {
-                Console.WriteLine("1.Print all allow courses");
+                Console.WriteLine("1.Print all available courses");
                 Console.WriteLine("2.Create Course");
                 Console.WriteLine("3.Display Course");
                 Console.WriteLine("4.Take a course");
@@ -68,11 +68,25 @@ namespace EducationPortal.Presentation
         public void DisplayCourse()
         {
             Console.WriteLine("Choose");
-            var inputIndex = Console.ReadLine();
-            var index = Int32.Parse(inputIndex);
+            var index = GetIntInput();
             var list = _service.GetAll();
-            var course = list[index];
+            var course = list[index-1];
             new CourseController(_service, _materialService, new MaterialController(_materialService), course).Process();
+        }
+
+        private int GetIntInput()
+        {
+            if (int.TryParse(Console.ReadLine(), out var input))
+            {
+                return input;
+            }
+            else
+            {
+                Console.WriteLine();
+                Console.WriteLine("Incorrect input, try again");
+                Console.WriteLine();
+                return GetIntInput();
+            }
         }
     }
 }
