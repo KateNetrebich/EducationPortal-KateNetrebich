@@ -1,9 +1,4 @@
-﻿using EducationPortal.Data.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EducationPortal.Application.Model
+﻿namespace EducationPortal.Application.Model
 {
     public class CreateMaterialRequest
     {

@@ -7,6 +7,5 @@ namespace EducationPortal.Repositories.FileRepository
         public UserJsonRepository(string filename) : base(filename)
         {
         }
-
     }
 }

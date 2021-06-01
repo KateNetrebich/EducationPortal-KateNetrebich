@@ -27,6 +27,5 @@ namespace EducationPortal.ConsoleApp
             ConsoleController controller = new ConsoleController(authService, coursesController);
             controller.Process();
         }
-
     }
 }
