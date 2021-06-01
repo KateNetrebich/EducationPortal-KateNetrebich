@@ -1,4 +1,5 @@
 ﻿using EducationPortal.Application.Service;
+using EducationPortal.Persistence.FileRepository;
 using EducationPortal.Presentation;
 using EducationPortal.Repositories.FileRepository;
 
@@ -10,11 +11,20 @@ namespace EducationPortal.ConsoleApp
 
         static void Main(string[] args)
         {
-            UserJsonRepository _repository = new UserJsonRepository(SavingDir + "\\users.json");
-            _repository.Import();
+            UserJsonRepository _userRepository = new UserJsonRepository(SavingDir + "\\users.json");
+            _userRepository.Import();
 
-            IAuthService authService = new AuthService(_repository);
-            ConsoleController controller = new ConsoleController(authService);
+            CourceJsonRepository _courseRepository = new CourceJsonRepository(SavingDir + "\\courses.json");
+            _courseRepository.Import();
+
+            MaterialJsonRepository _materialRepository = new MaterialJsonRepository(SavingDir + "\\material.json");
+            _materialRepository.Import();
+
+            IAuthService authService = new AuthService(_userRepository);
+            ICourseService courseService = new CourseService(_courseRepository);
+            IMaterialService materialService = new MaterialService(_materialRepository);
+            CoursesListController coursesController = new CoursesListController(courseService, materialService);
+            ConsoleController controller = new ConsoleController(authService, coursesController);
             controller.Process();
         }
 

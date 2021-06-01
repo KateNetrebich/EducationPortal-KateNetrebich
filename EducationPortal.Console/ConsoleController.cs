@@ -6,10 +6,12 @@ namespace EducationPortal.Presentation
 {
     public class ConsoleController
     {
-        private IAuthService authService;
-        public ConsoleController(IAuthService service)
+        private IAuthService _authService;
+        private CoursesListController _courses;
+        public ConsoleController(IAuthService service, CoursesListController courses)
         {
-            authService = service;
+            _authService = service;
+            _courses = courses;
         }
         public void Process()
         {
@@ -24,15 +26,18 @@ namespace EducationPortal.Presentation
                 Console.WriteLine("4.Exit");
 
                 var action = Console.ReadLine();
+                Console.Clear();
                 switch (action)
                 {
                     case "1":
                         var registration = Registration();
-                        authService.Register(registration);
+                        _authService.Register(registration);
                         break;
                     case "2":
                         var signIn = GetSignInInformation();
-                        currentUser = authService.SignIn(signIn);
+                        currentUser = _authService.SignIn(signIn);
+                        Console.Clear();
+                        _courses.Process();
                         break;
                     case "3":
                         if (currentUser == null)

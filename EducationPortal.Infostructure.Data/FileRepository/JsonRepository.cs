@@ -12,7 +12,10 @@ namespace EducationPortal.Repositories.FileRepository
 
         public override void Export()
         {
-            var json = JsonConvert.SerializeObject(_entities, Formatting.Indented);
+            var json = JsonConvert.SerializeObject(_entities, Formatting.Indented, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.All
+            });
             File.WriteAllText(FileName, json);
         }
 
@@ -21,7 +24,10 @@ namespace EducationPortal.Repositories.FileRepository
             if (File.Exists(FileName))
             {
                 var json = File.ReadAllText(FileName);
-                _entities = JsonConvert.DeserializeObject<Dictionary<TKey, TEntity>>(json);
+                _entities = JsonConvert.DeserializeObject<Dictionary<TKey, TEntity>>(json, new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto
+                });
             }
         }
     }
