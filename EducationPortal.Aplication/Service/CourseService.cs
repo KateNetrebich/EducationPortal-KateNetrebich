@@ -35,5 +35,10 @@ namespace EducationPortal.Application.Service
             _repository.Update(course.Id, course);
             return course;
         }
+
+        public Course GetById(long courseId)
+        {
+            return _repository.Get(courseId);
+        }
     }
 }
