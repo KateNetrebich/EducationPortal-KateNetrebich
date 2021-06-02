@@ -8,6 +8,7 @@ namespace EducationPortal.Presentation
     {
         private IAuthService _authService;
         private CoursesListController _courses;
+        private CourseResultService _resultService;
         public ConsoleController(IAuthService service, CoursesListController courses)
         {
             _authService = service;
@@ -19,11 +20,14 @@ namespace EducationPortal.Presentation
             User currentUser = null;
             while (true)
             {
-                Console.WriteLine("Select action");
+                Console.BackgroundColor = ConsoleColor.Red;
+                Console.WriteLine("Main menu");
+                Console.ResetColor();
                 Console.WriteLine("1.New user registration");
                 Console.WriteLine("2.Sign in");
-                Console.WriteLine("3.Print me");
-                Console.WriteLine("4.Exit");
+                Console.WriteLine("3.Print information about my profile");
+                Console.WriteLine("4.Manage cources");
+                Console.WriteLine("5.Exit");
 
                 var action = Console.ReadLine();
                 Console.Clear();
@@ -32,12 +36,15 @@ namespace EducationPortal.Presentation
                     case "1":
                         var registration = Registration();
                         _authService.Register(registration);
+                        Console.Clear();
                         break;
                     case "2":
                         var signIn = GetSignInInformation();
                         currentUser = _authService.SignIn(signIn);
                         Console.Clear();
-                        _courses.Process();
+                        Console.BackgroundColor = ConsoleColor.Magenta;
+                        Console.WriteLine($"WELCOME {currentUser.Username}");
+                        Console.ResetColor();
                         break;
                     case "3":
                         if (currentUser == null)
@@ -45,36 +52,48 @@ namespace EducationPortal.Presentation
                             Console.WriteLine("Press 2 to Sign In");
                             break;
                         }
-                        Console.WriteLine($" UserName:{currentUser.Username}\n Role:{currentUser.Role}");
+                        PrintMyInfo(currentUser);
                         break;
                     case "4":
+                        Console.Clear();
+                        _courses.Process();
+                        break;
+                    case "5":
                         return;
                 }
             }
         }
         private RegisterRequest Registration()
         {
-            RegisterRequest user = new RegisterRequest();
-            Console.WriteLine("Input Username");
-            user.Username = Console.ReadLine();
-            Console.WriteLine("Input password");
-            user.Password = Console.ReadLine();
-            Console.WriteLine("Input role");
-            user.Role = Console.ReadLine();
-            return user;
+            try
+            {
+                RegisterRequest user = new RegisterRequest();
+                Console.WriteLine("Input Username");
+                user.Username = Console.ReadLine();
+                Console.WriteLine("Input password");
+                user.Password = Console.ReadLine();
+                Console.WriteLine("Input role");
+                user.Role = Console.ReadLine();
+                return user;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An exception occured:{ex.Message}");
+            }
+            
         }
 
         private SignInRequest GetSignInInformation()
         {
             Console.WriteLine("Input UserName");
-            var name = Console.ReadLine();
+            string name = Console.ReadLine();
             Console.WriteLine("Input Password");
-            var password = Console.ReadLine();
-            if (name == null)
+            string password = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(name))
             {
                 throw new Exception("Username is empty");
             }
-            if (password == null)
+            if (string.IsNullOrWhiteSpace(password))
             {
                 throw new Exception("Password is empty");
             }
@@ -83,6 +102,17 @@ namespace EducationPortal.Presentation
                 Username = name,
                 Password = password
             };
+        }
+
+        private void PrintMyInfo(User currentUser) 
+        {
+
+            Console.WriteLine($" UserName:{currentUser.Username}\n Role:{currentUser.Role}");
+            //var results = _resultService.GetByUser(currentUser);
+            //foreach (var item in results)
+            //{
+            //    Console.WriteLine($"Courses:{item.Course}\nCourses Result{item.Result}");
+            //}
         }
     }
 }

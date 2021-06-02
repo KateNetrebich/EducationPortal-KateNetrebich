@@ -17,17 +17,22 @@ namespace EducationPortal.Presentation
         {
             while (true)
             {
+                Console.BackgroundColor = ConsoleColor.Red;
+                Console.WriteLine("Course Menu");
+                Console.ResetColor();
                 Console.WriteLine("1.Print all available courses");
                 Console.WriteLine("2.Create Course");
                 Console.WriteLine("3.Display Course");
                 Console.WriteLine("4.Take a course");
                 Console.WriteLine("5.Return");
+                Console.WriteLine();
 
                 var action = Console.ReadLine();
                 Console.Clear();
                 switch (action)
                 {
                     case "1":
+                        Console.WriteLine("All available courses");
                         PrintAll();
                         break;
                     case "2":
@@ -37,6 +42,7 @@ namespace EducationPortal.Presentation
                         DisplayCourse();
                         break;
                     case "4":
+
                         break;
                     case "5":
                         return;
@@ -67,7 +73,10 @@ namespace EducationPortal.Presentation
 
         public void DisplayCourse()
         {
-            Console.WriteLine("Choose");
+            PrintAll();
+            Console.BackgroundColor = ConsoleColor.Red;
+            Console.WriteLine("Choose Course for editing");
+            Console.ResetColor();
             var index = GetIntInput();
             var list = _service.GetAll();
             var course = list[index-1];
@@ -87,6 +96,17 @@ namespace EducationPortal.Presentation
                 Console.WriteLine();
                 return GetIntInput();
             }
+        }
+
+        public void TakeACourse()
+        {
+            PrintAll();
+            Console.WriteLine("Choose course");
+            var courseIndex = GetIntInput();
+            var list = _service.GetAll();
+            var course = list[courseIndex - 1];
+            
+
         }
     }
 }
