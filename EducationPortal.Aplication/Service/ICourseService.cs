@@ -9,6 +9,5 @@ namespace EducationPortal.Application.Service
         void CreateCourse(CreateCourseRequest requst);
         List<Course>GetAll();
         Course AddMaterial(Course course, Material material);
-        Course GetById(long courseId);
     }
 }

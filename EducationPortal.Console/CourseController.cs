@@ -22,12 +22,9 @@ namespace EducationPortal.Presentation
         {
             while (true)
             {
-                Console.BackgroundColor = ConsoleColor.Red;
-                Console.WriteLine("Materials in Curse");
-                Console.ResetColor();
                 Console.WriteLine("1.Print Course Material");
-                Console.WriteLine("2.Add new materials");
-                //Console.WriteLine("3.Add existing materials");
+                Console.WriteLine("2.Add existing materials");
+                Console.WriteLine("3.Add new materials");
                 Console.WriteLine("4.Return");
 
                 var action = Console.ReadLine();
@@ -38,10 +35,10 @@ namespace EducationPortal.Presentation
                         PrintMyMaterials();
                         break;
                     case "2":
-                        AddNewMaterial();
+                        
                         break;
                     case "3":
-                        
+                        AddNewMaterial();
                         break;
                 }
             }
@@ -54,7 +51,7 @@ namespace EducationPortal.Presentation
             for (int i = 0; i < materials.Count; i++)
             {
                 var item = materials[i];
-                Console.WriteLine($"{i+1}.Name:{item.Name}");
+                Console.WriteLine($"{i+1}. {item.Name}");
             }
         }
 

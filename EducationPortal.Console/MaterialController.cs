@@ -15,9 +15,6 @@ namespace EducationPortal.Presentation
 
         public Material Process()
         {
-            Console.BackgroundColor = ConsoleColor.Red;
-            Console.WriteLine("Material Creating");
-            Console.ResetColor();
             Console.WriteLine("1.Create Article Material");
             Console.WriteLine("2.Create Video Material");
             Console.WriteLine("3.Create Book Material");
