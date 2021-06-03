@@ -1,6 +1,5 @@
 ﻿using EducationPortal.Data;
 using EducationPortal.Data.Entities;
-using EducationPortal.Infostructure.Data;
 using EducationPortal.Models;
 using System;
 using System.Collections.Generic;
