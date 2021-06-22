@@ -1,6 +1,7 @@
 ﻿using EducationPortal.Application.Service;
 using EducationPortal.Models;
 using System;
+using System.Threading.Tasks;
 
 namespace EducationPortal.Presentation
 {
@@ -14,7 +15,7 @@ namespace EducationPortal.Presentation
             _authService = service;
             _courses = courses;
         }
-        public void Process()
+        public async Task Process()
         {
 
             User currentUser = null;
@@ -35,12 +36,12 @@ namespace EducationPortal.Presentation
                 {
                     case "1":
                         var registration = Registration();
-                        _authService.Register(registration);
+                        await _authService.Register(registration);
                         Console.Clear();
                         break;
                     case "2":
                         var signIn = GetSignInInformation();
-                        currentUser = _authService.SignIn(signIn);
+                        currentUser = await _authService.SignIn(signIn);
                         Console.Clear();
                         Console.BackgroundColor = ConsoleColor.Magenta;
                         Console.WriteLine($"WELCOME {currentUser.Username}");
@@ -80,7 +81,7 @@ namespace EducationPortal.Presentation
             {
                 throw new Exception($"An exception occured:{ex.Message}");
             }
-            
+
         }
 
         private SignInRequest GetSignInInformation()
@@ -104,11 +105,10 @@ namespace EducationPortal.Presentation
             };
         }
 
-        private void PrintMyInfo(User currentUser) 
+        private void PrintMyInfo(User currentUser)
         {
-
             Console.WriteLine($" UserName:{currentUser.Username}\n Role:{currentUser.Role}");
-            //var results = _resultService.GetByUser(currentUser);
+            //var results = await _resultService.GetByUser(currentUser);
             //foreach (var item in results)
             //{
             //    Console.WriteLine($"Courses:{item.Course}\nCourses Result{item.Result}");

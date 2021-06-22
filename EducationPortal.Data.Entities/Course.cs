@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EducationPortal.Data.Entities
 {
@@ -9,17 +11,17 @@ namespace EducationPortal.Data.Entities
 
         }
 
-        public Course(long id, string name, string description,List<long> materialsIds)
+        public Course(int id, string name, string description, int materialsIds)
         {
             Id = id;
             Name = name;
             Description = description;
-            MaterialsIds = materialsIds;
         }
 
-        public long Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public List<long> MaterialsIds { get; set; }
+
+        public List<Material> Materials { get; set; }
     }
 }

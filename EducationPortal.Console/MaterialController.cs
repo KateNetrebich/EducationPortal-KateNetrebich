@@ -2,6 +2,7 @@
 using EducationPortal.Application.Service;
 using EducationPortal.Data.Entities;
 using System;
+using System.Threading.Tasks;
 
 namespace EducationPortal.Presentation
 {
@@ -13,7 +14,7 @@ namespace EducationPortal.Presentation
             _service = service;
         }
 
-        public Material Process()
+        public async Task<Material> Process()
         {
             Console.BackgroundColor = ConsoleColor.Red;
             Console.WriteLine("Material Creating");
@@ -28,22 +29,24 @@ namespace EducationPortal.Presentation
             switch (action)
             {
                 case "1":
-                    return CreateArticleMaterial();
+                    return await CreateArticleMaterial();
                 case "2":
-                    return CreateVideoMaterial();
+                    return await CreateVideoMaterial();
                 case "3":
-                    return CreateBookMaterial();
+                    return await CreateBookMaterial();
                 case "4":
                     return null;
             }
             throw new Exception();
         }
 
-        private Material CreateArticleMaterial()
+        private Task<Material> CreateArticleMaterial()
         {
             CreateArticleRequest request = new CreateArticleRequest();
             Console.WriteLine("Input Article Name");
             request.Name = Console.ReadLine();
+            Console.WriteLine("Input Article Description");
+            request.Description = Console.ReadLine();
             Console.WriteLine("Input Article URL");
             request.URL = Console.ReadLine();
             Console.WriteLine("Input Article Date of publication");
@@ -51,7 +54,7 @@ namespace EducationPortal.Presentation
             return _service.CreateMaterial(request);
         }
 
-        private Material CreateVideoMaterial()
+        private Task<Material> CreateVideoMaterial()
         {
             CreateVideoRequest request = new CreateVideoRequest();
             Console.WriteLine("Input Video Name");
@@ -65,7 +68,7 @@ namespace EducationPortal.Presentation
             return _service.CreateMaterial(request);
         }
 
-        private Material CreateBookMaterial()
+        private Task<Material> CreateBookMaterial()
         {
             CreateBookRequest request = new CreateBookRequest();
             Console.WriteLine("Input Book Name");
@@ -77,7 +80,7 @@ namespace EducationPortal.Presentation
             Console.WriteLine("Input Pages Number");
             request.PageNumber = GetIntInput();
             Console.WriteLine("Input Year of publication");
-            request.YearOfPublication = GetIntInput();
+            request.YearOfPublication = Console.ReadLine();
             return _service.CreateMaterial(request);
         }
 

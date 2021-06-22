@@ -1,9 +1,9 @@
 ﻿using EducationPortal.Application.Model;
-using EducationPortal.Data;
+using EducationPortal.Application.Repositories;
 using EducationPortal.Data.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace EducationPortal.Application.Service
 {
@@ -14,20 +14,20 @@ namespace EducationPortal.Application.Service
         {
             _repository = repository;
         }
-        public Material CreateMaterial(CreateMaterialRequest request)
+        public async Task<Material> CreateMaterial(CreateMaterialRequest request)
         {
             if(request is CreateArticleRequest)
             {
                 CreateArticleRequest articleRequest = (CreateArticleRequest)request;
                 var article = new ArticleMaterial
                 {
-                    Id = DateTime.Now.ToFileTime(),
+                    Id = articleRequest.Id,
                     Name = articleRequest.Name,
                     Description = articleRequest.Description,
                     URL = articleRequest.URL,
-                    PublicationDate = articleRequest.PublicationDate
+                    PublicationDate =articleRequest.PublicationDate
                 };
-                _repository.Create(article, article.Id);
+                await _repository.CreateAsync(article);
                 return article;
             }
             if(request is CreateVideoRequest)
@@ -35,13 +35,13 @@ namespace EducationPortal.Application.Service
                 CreateVideoRequest videoRequest = (CreateVideoRequest)request;
                 var video = new VideoMaterial
                 {
-                    Id = DateTime.Now.ToFileTime(),
+                    Id = videoRequest.Id,
                     Name = videoRequest.Name,
                     Description = videoRequest.Description,
                     Duration = videoRequest.Duration,
                     Quality = videoRequest.Quality
                 };
-                _repository.Create(video, video.Id);
+                await _repository.CreateAsync(video);
                 return video;
             }
             if(request is CreateBookRequest)
@@ -49,27 +49,27 @@ namespace EducationPortal.Application.Service
                 CreateBookRequest bookRequest = (CreateBookRequest)request;
                 var book = new BookMaterial
                 {
-                    Id=DateTime.Now.ToFileTime(),
+                    Id=bookRequest.Id,
                     Name = bookRequest.Name,
                     Description = bookRequest.Description,
                     Author = bookRequest.Author,
                     PageNumber = bookRequest.PageNumber,
                     YearOfPublication = bookRequest.YearOfPublication
                 };
-                _repository.Create(book, book.Id);
+                await _repository.CreateAsync(book);
                 return book;
             }
             throw new NotImplementedException();
         }
 
-        public List<Material> GetAll()
+        public async Task<Material> Get(Material material)
         {
-            return _repository.List();
+            return await _repository.FindAsync(material.Id);
         }
 
-        public List<Material> GetByCourse(Course course)
+        public IEnumerable<Material> GetByCourse(Course course)
         {
-            return course.MaterialsIds.Select(id => _repository.Get(id)).ToList();
+            return course.Materials;
         }
 
     }

@@ -1,4 +1,6 @@
-﻿namespace EducationPortal.Application.Model
+﻿using System;
+
+namespace EducationPortal.Application.Model
 {
     public class CreateArticleRequest : CreateMaterialRequest
     {

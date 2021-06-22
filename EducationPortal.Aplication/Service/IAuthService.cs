@@ -1,10 +1,11 @@
 ﻿using EducationPortal.Models;
+using System.Threading.Tasks;
 
 namespace EducationPortal.Application.Service
 {
     public interface IAuthService
     {
-        void Register(RegisterRequest request);
-        User SignIn(SignInRequest request);
+        Task<User> Register(RegisterRequest request);
+        Task<User> SignIn(SignInRequest request);
     }
 }

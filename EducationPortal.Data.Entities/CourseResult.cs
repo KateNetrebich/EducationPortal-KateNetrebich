@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EducationPortal.Models;
+using System;
 
 namespace EducationPortal.Data.Entities
 {
@@ -8,10 +9,14 @@ namespace EducationPortal.Data.Entities
         {
 
         }
+
         public int Id { get; set; }
-        public string StudentName { get; set; }
-        public long CourseId { get; set; }
+        public int UserId { get; set; }
+        public int CourseId { get; set; }
         public DateTime CourseDateTime { get; set; }
         public CourseResultCondition Condition { get; set; }
+
+        public Course Course { get; set; }
+        public User User { get; set; }
     }
 }

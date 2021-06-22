@@ -7,13 +7,14 @@
 
         }
 
-        public VideoMaterial(string name, string descriptoin, string duration, string quality) : base(name, descriptoin)
+        public VideoMaterial(string name, string description, string duration, string quality) : base(name, description)
         {
             Name = name;
-            Description = descriptoin;
+            Description = description;
             Duration = duration;
             Quality = quality;
         }
+
         public string Duration { get; set; }
         public string Quality { get; set; }
     }

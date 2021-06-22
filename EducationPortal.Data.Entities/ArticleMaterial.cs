@@ -1,4 +1,6 @@
-﻿namespace EducationPortal.Data.Entities
+﻿using System;
+
+namespace EducationPortal.Data.Entities
 {
     public class ArticleMaterial : Material
     {

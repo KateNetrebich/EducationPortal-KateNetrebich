@@ -1,9 +1,10 @@
-﻿using EducationPortal.Data;
+﻿using EducationPortal.Application.Repositories;
 using EducationPortal.Data.Entities;
 using EducationPortal.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EducationPortal.Application.Service
 {
@@ -16,29 +17,30 @@ namespace EducationPortal.Application.Service
             _repository = repository;
         }
 
-        public void AddCourse(User user, Course course)
+        public async Task AddCourse(User user, Course course)
         {
             var courseResult = new CourseResult
             {
-                StudentName = user.Username,
+                UserId = user.Id,
                 CourseId = course.Id
             };
-            _repository.Create(courseResult, DateTime.Now.ToFileTime());
+            _repository.CreateAsync(courseResult);
         }
 
-        public List<CourseResultInfo> GetByUser(User user)
+        public async Task<List<CourseResultInfo>> GetByUser()
         {
-            return _repository.List()
-                .Where(result => result.StudentName == user.Username)
-                .Select(result =>
-                {
-                    var course = courseService.GetById(result.CourseId);
-                    return new CourseResultInfo
-                    {
-                        Result = result,
-                        Course = course
-                    };
-                }).ToList();
+            throw new Exception();
+            //return await _repository.GetAsync()
+            //    .Where(result => result.StudentName == user.Username)
+            //    .Select(async result =>
+            //    {
+            //        var course = await courseService.GetById(result.CourseId);
+            //        return new CourseResultInfo
+            //        {
+            //            Result = result,
+            //            Course = course
+            //        };
+            //    }).;
         }
     }
 

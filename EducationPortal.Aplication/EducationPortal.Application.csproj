@@ -6,11 +6,12 @@
 
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.2" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.11.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.11.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EducationPortal.Data\EducationPortal.Data.csproj" />
-    <ProjectReference Include="..\EducationPortal.Infostructure.Data\EducationPortal.Persistence.csproj" />
+    <ProjectReference Include="..\EducationPortal.Data.Entities\EducationPortal.Data.Entities.csproj" />
   </ItemGroup>
 
 </Project>

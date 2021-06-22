@@ -1,6 +1,7 @@
 ﻿using EducationPortal.Application.Model;
 using EducationPortal.Application.Service;
 using System;
+using System.Threading.Tasks;
 
 namespace EducationPortal.Presentation
 {
@@ -13,13 +14,13 @@ namespace EducationPortal.Presentation
             _service = service;
             _materialService = materialService;
         }
-        public void Process()
+        public async Task Process()
         {
             while (true)
             {
                 Console.BackgroundColor = ConsoleColor.Red;
                 Console.WriteLine("Course Menu");
-                Console.ResetColor();
+                Console.ResetColor(); 
                 Console.WriteLine("1.Print all available courses");
                 Console.WriteLine("2.Create Course");
                 Console.WriteLine("3.Display Course");
@@ -50,9 +51,9 @@ namespace EducationPortal.Presentation
             }
         }
 
-        public void PrintAll()
+        public async void PrintAll()
         {
-            var all = _service.GetAll();
+            var all = await _service.GetAll();
             for (int i = 0; i < all.Count; i++)
             {
                 var item = all[i];
@@ -71,16 +72,16 @@ namespace EducationPortal.Presentation
             _service.CreateCourse(course);
         }
 
-        public void DisplayCourse()
+        public async void DisplayCourse()
         {
             PrintAll();
             Console.BackgroundColor = ConsoleColor.Red;
             Console.WriteLine("Choose Course for editing");
             Console.ResetColor();
             var index = GetIntInput();
-            var list = _service.GetAll();
-            var course = list[index-1];
-            new CourseController(_service, _materialService, new MaterialController(_materialService), course).Process();
+            var list = _service.GetAll().Result;
+            var course = list[index - 1];
+           await new CourseController(_service, _materialService, new MaterialController(_materialService), course).Process();
         }
 
         private int GetIntInput()
@@ -98,15 +99,13 @@ namespace EducationPortal.Presentation
             }
         }
 
-        public void TakeACourse()
+        public async void TakeACourse()
         {
             PrintAll();
             Console.WriteLine("Choose course");
             var courseIndex = GetIntInput();
-            var list = _service.GetAll();
+            var list = await _service.GetAll();
             var course = list[courseIndex - 1];
-            
-
         }
     }
 }

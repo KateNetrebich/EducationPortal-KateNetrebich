@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace EducationPortal.Application.Model
 {
@@ -8,6 +9,6 @@ namespace EducationPortal.Application.Model
         [Range(1,int.MaxValue)]
         public int PageNumber { get; set; }
         [Range(1985, int.MaxValue)]
-        public int YearOfPublication { get; set; }
+        public string YearOfPublication { get; set; }
     }
 }

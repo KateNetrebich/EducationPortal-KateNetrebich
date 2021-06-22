@@ -1,44 +1,46 @@
 ﻿using EducationPortal.Application.Model;
+using EducationPortal.Application.Repositories;
 using EducationPortal.Data.Entities;
-using EducationPortal.Infostructure.Data;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace EducationPortal.Application.Service
 {
     public class CourseService : ICourseService
     {
         private ICourseRepository _repository;
+
         public CourseService(ICourseRepository repository)
         {
             _repository = repository;
         }
-        public void CreateCourse(CreateCourseRequest requst)
+
+        public async Task CreateCourse(CreateCourseRequest request)
         {
             var course = new Course
             {
-                Name = requst.Name,
-                Description = requst.Description,
-                MaterialsIds = new List<long>()
+                Name = request.Name,
+                Description = request.Description
             };
-            _repository.Create(course, DateTime.Now.ToFileTime());
+            await _repository.CreateAsync(course);
         }
 
-        public List<Course> GetAll()
+        public Task<List<Course>> GetAll()
         {
-            return  _repository.List();
+            return _repository.GetAsync();
         }
 
-        public Course AddMaterial(Course course, Material material)
+        public async Task<Course> AddMaterial(Course course, Material material)
         {
-            course.MaterialsIds.Add(material.Id);
-            _repository.Update(course.Id, course);
+            course.Materials.Add(material);
+            await _repository.SaveAsync(course);
             return course;
         }
 
-        public Course GetById(long courseId)
+        public async Task<Course> GetById(int courseId)
         {
-            return _repository.Get(courseId);
+            return await _repository.FindAsync(courseId);
         }
     }
 }

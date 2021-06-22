@@ -1,7 +1,9 @@
 ﻿using BCrypt.Net;
+using EducationPortal.Application.Model;
+using EducationPortal.Application.Repositories;
 using EducationPortal.Models;
-using EducationPortal.Repositories;
 using System;
+using System.Threading.Tasks;
 
 namespace EducationPortal.Application.Service
 {
@@ -25,7 +27,7 @@ namespace EducationPortal.Application.Service
                 return hash;
             }
         }
-        public void Register(RegisterRequest request)
+        public async Task<User> Register(RegisterRequest request)
         {
             var user = new User
             {
@@ -34,12 +36,13 @@ namespace EducationPortal.Application.Service
                 Role = request.Role
             };
 
-            _repository.Create(user, user.Username);
+            await _repository.CreateAsync(user);
+            return user;
         }
 
-        public User SignIn(SignInRequest request)
+        public async Task<User> SignIn(SignInRequest request)
         {
-            var user = _repository.Get(request.Username);
+            var user = await _repository.FindByUserNameAsync(request.Username);
             if (user == null)
             {
                 throw new Exception("wrong UserName or password try again");
@@ -50,6 +53,18 @@ namespace EducationPortal.Application.Service
                 throw new Exception("wrong UserName or password try again");
             }
             return user;
+        }
+
+        public async Task<User> Update(UpdateUserRequest request, User currentUser)
+        {
+            var user = await _repository.FindAsync(currentUser.Id);
+            user.Username = request.Username ?? user.Username;
+            user.PasswordHash = GetPasswordHash(request.Password) ?? user.PasswordHash;
+            if (request.Role != null)
+            {
+                throw new Exception();
+            }
+            return await _repository.SaveAsync(user);
         }
     }
 }
