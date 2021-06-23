@@ -18,6 +18,6 @@ namespace EducationPortal.Data.Entities
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public List<Course> Courses { get; set; }
+        public virtual ICollection<Course> Courses { get; set; }
     }
 }

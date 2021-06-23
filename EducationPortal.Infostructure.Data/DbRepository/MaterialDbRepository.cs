@@ -40,12 +40,12 @@ namespace EducationPortal.Persistence.DbRepository
 
         public async Task<Material> FindAsync(int id)
         {
-            return await _dbContext.BookMaterials.Where(b => b.Id == id).FirstOrDefaultAsync() ?? throw new Exception();
+            return await _dbContext.BookMaterials.Where(b => b.Id == id).Include(x=>x.Courses).FirstOrDefaultAsync() ?? throw new Exception();
         }
 
         public async Task<List<Material>> GetAsync()
         {
-            return await _dbContext.Materials.ToListAsync();
+            return await _dbContext.Materials.Include(x=>x.Courses).ToListAsync();
         }
 
         public async Task<Material> SaveAsync(Material entity)

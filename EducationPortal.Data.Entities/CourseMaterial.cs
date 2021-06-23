@@ -14,7 +14,7 @@ namespace EducationPortal.Data.Entities
         public int CourseId { get; set; }
         public int MaterialId { get; set; }
 
-        public Material Material { get; set; }
-        public Course Course { get; set; }
+        public virtual Material Material { get; set; }
+        public virtual Course Course { get; set; }
     }
 }

@@ -34,7 +34,7 @@ namespace EducationPortal.Application.Service
         public async Task<Course> AddMaterial(Course course, Material material)
         {
             course.Materials.Add(material);
-            await _repository.SaveAsync(course);
+            _repository.SaveAsync(course);
             return course;
         }
 
