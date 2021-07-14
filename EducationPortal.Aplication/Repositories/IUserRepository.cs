@@ -1,5 +1,4 @@
-﻿using EducationPortal.Application.Model;
-using EducationPortal.Models;
+﻿using EducationPortal.Models;
 using System.Threading.Tasks;
 
 namespace EducationPortal.Application.Repositories

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EducationPortal.Persistence.Migrations
 {
     [DbContext(typeof(EducationPortalDbContext))]
-    [Migration("20210622150508_ChangedCourseMaterialTable")]
-    partial class ChangedCourseMaterialTable
+    [Migration("20210625100528_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,21 +21,6 @@ namespace EducationPortal.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("CourseMaterial", b =>
-                {
-                    b.Property<int>("CoursesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MaterialsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CoursesId", "MaterialsId");
-
-                    b.HasIndex("MaterialsId");
-
-                    b.ToTable("CourseMaterial");
-                });
 
             modelBuilder.Entity("EducationPortal.Data.Entities.Course", b =>
                 {
@@ -63,6 +48,21 @@ namespace EducationPortal.Persistence.Migrations
                         .IsClustered();
 
                     b.ToTable("Courses", "sch");
+                });
+
+            modelBuilder.Entity("EducationPortal.Data.Entities.CourseMaterial", b =>
+                {
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaterialId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CourseId", "MaterialId");
+
+                    b.HasIndex("MaterialId");
+
+                    b.ToTable("CourseMaterial");
                 });
 
             modelBuilder.Entity("EducationPortal.Data.Entities.CourseResult", b =>
@@ -212,19 +212,23 @@ namespace EducationPortal.Persistence.Migrations
                     b.ToTable("VideoMaterials", "sch");
                 });
 
-            modelBuilder.Entity("CourseMaterial", b =>
+            modelBuilder.Entity("EducationPortal.Data.Entities.CourseMaterial", b =>
                 {
-                    b.HasOne("EducationPortal.Data.Entities.Course", null)
+                    b.HasOne("EducationPortal.Data.Entities.Course", "Course")
                         .WithMany()
-                        .HasForeignKey("CoursesId")
+                        .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EducationPortal.Data.Entities.Material", null)
+                    b.HasOne("EducationPortal.Data.Entities.Material", "Material")
                         .WithMany()
-                        .HasForeignKey("MaterialsId")
+                        .HasForeignKey("MaterialId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Material");
                 });
 
             modelBuilder.Entity("EducationPortal.Data.Entities.CourseResult", b =>

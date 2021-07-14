@@ -22,7 +22,7 @@ namespace EducationPortal.Presentation
             Console.WriteLine("1.Create Article Material");
             Console.WriteLine("2.Create Video Material");
             Console.WriteLine("3.Create Book Material");
-            Console.WriteLine("4.Return");
+            Console.WriteLine("4.Exit");
 
             var action = Console.ReadLine();
             Console.Clear();
@@ -35,7 +35,7 @@ namespace EducationPortal.Presentation
                 case "3":
                     return await CreateBookMaterial();
                 case "4":
-                    return null;
+                    break;
             }
             throw new Exception();
         }

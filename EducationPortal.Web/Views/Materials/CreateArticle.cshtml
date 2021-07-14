@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "CreateArticle";
+}
+<h3>Add new article to course</h3>
+<form method="post">
+    <div class="form-group">
+        <label for="Name">Article Name</label>
+        <input name="name" type="text" class="form-control" id="articleName">
+        <label for="Description">Article Description</label>
+        <input name="description" type="text" class="form-control" id="articleDescription">
+        <label for="url">URL</label>
+        <input name="url" type="text" class="form-control" id="articleUrl">
+        <label for="PublicationDate">Article Description</label>
+        <input name="date" type="date" class="form-control" id="articleDate">
+    </div>
+    <button type="submit" class="btn btn-primary">Add to course</button>
+</form>

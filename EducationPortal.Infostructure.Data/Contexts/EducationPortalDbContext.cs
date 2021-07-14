@@ -1,6 +1,8 @@
 ﻿using EducationPortal.Data.Entities;
 using EducationPortal.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Protocols;
+using System.Configuration;
 using System.Reflection;
 
 namespace EducationPortal.Persistence.Contexts
@@ -15,6 +17,7 @@ namespace EducationPortal.Persistence.Contexts
         public DbSet<User> Users { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<CourseResult> CourseResults { get; set; }
+        public DbSet<CourseMaterial> CourseMaterial { get; set; }
         public DbSet<Material> Materials { get; set; }
         public DbSet<VideoMaterial> VideoMaterials { get; set; }
         public DbSet<BookMaterial> BookMaterials { get; set; }
@@ -28,6 +31,7 @@ namespace EducationPortal.Persistence.Contexts
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+           
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

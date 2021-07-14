@@ -1,9 +1,6 @@
 ﻿using EducationPortal.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EducationPortal.Persistence.EntitiesMapping
 {
@@ -32,10 +29,20 @@ namespace EducationPortal.Persistence.EntitiesMapping
                 .IsRequired();
 
             builder.HasMany(x => x.Materials)
-                .WithMany(x => x.Courses)
-                .UsingEntity(x => x.ToTable("CourseMaterial"));
-               
-
+               .WithMany(x => x.Courses)
+               .UsingEntity<CourseMaterial>(x => x
+                   .HasOne(x => x.Material)
+                   .WithMany()
+                   .HasForeignKey(x => x.MaterialId),
+                   x => x
+                   .HasOne(x => x.Course)
+                   .WithMany()
+                   .HasForeignKey(x => x.CourseId),
+                   x =>
+                   {
+                       x.HasKey(x => new { x.CourseId, x.MaterialId });
+                       x.ToTable("CourseMaterial");
+                   });
         }
     }
 }

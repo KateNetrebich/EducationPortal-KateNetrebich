@@ -50,14 +50,27 @@ namespace EducationPortal.Presentation
                     case "3":
                         if (currentUser == null)
                         {
-                            Console.WriteLine("Press 2 to Sign In");
+                            Console.BackgroundColor = ConsoleColor.Blue;
+                            Console.WriteLine("Press 2 to Sign In!!!");
+                            Console.ResetColor();
                             break;
                         }
-                        PrintMyInfo(currentUser);
+                        Console.BackgroundColor = ConsoleColor.Magenta;
+                        Console.WriteLine("User info");
+                        Console.ResetColor();
+                        await PrintMyInfo(currentUser);
+                        Console.WriteLine();
                         break;
                     case "4":
+                        if (currentUser == null)
+                        {
+                            Console.BackgroundColor = ConsoleColor.Blue;
+                            Console.WriteLine("Press 2 to Sign In!!!");
+                            Console.ResetColor();
+                            break;
+                        }
                         Console.Clear();
-                        _courses.Process();
+                        await _courses.Process();
                         break;
                     case "5":
                         return;
@@ -105,7 +118,7 @@ namespace EducationPortal.Presentation
             };
         }
 
-        private void PrintMyInfo(User currentUser)
+        private async Task PrintMyInfo(User currentUser)
         {
             Console.WriteLine($" UserName:{currentUser.Username}\n Role:{currentUser.Role}");
             //var results = await _resultService.GetByUser(currentUser);

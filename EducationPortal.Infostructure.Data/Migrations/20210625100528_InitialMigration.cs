@@ -11,6 +11,22 @@ namespace EducationPortal.Persistence.Migrations
                 name: "sch");
 
             migrationBuilder.CreateTable(
+                name: "Courses",
+                schema: "sch",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CourseName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CourseId", x => x.Id)
+                        .Annotation("SqlServer:Clustered", true);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Materials",
                 schema: "sch",
                 columns: table => new
@@ -89,22 +105,25 @@ namespace EducationPortal.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Courses",
+                name: "CourseMaterial",
                 schema: "sch",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CourseName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    CourseId = table.Column<int>(type: "int", nullable: false),
                     MaterialId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CourseId", x => x.Id)
-                        .Annotation("SqlServer:Clustered", true);
+                    table.PrimaryKey("PK_CourseMaterial", x => new { x.CourseId, x.MaterialId });
                     table.ForeignKey(
-                        name: "FK_Course_Material_MaterialId",
+                        name: "FK_CourseMaterial_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalSchema: "sch",
+                        principalTable: "Courses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CourseMaterial_Materials_MaterialId",
                         column: x => x.MaterialId,
                         principalSchema: "sch",
                         principalTable: "Materials",
@@ -165,16 +184,16 @@ namespace EducationPortal.Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_CourseMaterial_MaterialId",
+                schema: "sch",
+                table: "CourseMaterial",
+                column: "MaterialId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CourseResults_UserId",
                 schema: "sch",
                 table: "CourseResults",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Courses_MaterialId",
-                schema: "sch",
-                table: "Courses",
-                column: "MaterialId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -185,6 +204,10 @@ namespace EducationPortal.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "BookMaterials",
+                schema: "sch");
+
+            migrationBuilder.DropTable(
+                name: "CourseMaterial",
                 schema: "sch");
 
             migrationBuilder.DropTable(

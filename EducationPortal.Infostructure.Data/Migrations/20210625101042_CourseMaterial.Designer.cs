@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EducationPortal.Persistence.Migrations
 {
     [DbContext(typeof(EducationPortalDbContext))]
-    [Migration("20210622132250_AddCourseMaterialTable")]
-    partial class AddCourseMaterialTable
+    [Migration("20210625101042_CourseMaterial")]
+    partial class CourseMaterial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -36,9 +36,6 @@ namespace EducationPortal.Persistence.Migrations
                         .HasColumnType("nvarchar(256)")
                         .HasColumnName("Description");
 
-                    b.Property<int>("MaterialId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(256)
@@ -61,11 +58,11 @@ namespace EducationPortal.Persistence.Migrations
                     b.Property<int>("MaterialId")
                         .HasColumnType("int");
 
-                    b.HasIndex("CourseId");
+                    b.HasKey("CourseId", "MaterialId");
 
                     b.HasIndex("MaterialId");
 
-                    b.ToTable("CourseMaterial", "sch");
+                    b.ToTable("CourseMaterial");
                 });
 
             modelBuilder.Entity("EducationPortal.Data.Entities.CourseResult", b =>
@@ -220,14 +217,12 @@ namespace EducationPortal.Persistence.Migrations
                     b.HasOne("EducationPortal.Data.Entities.Course", "Course")
                         .WithMany()
                         .HasForeignKey("CourseId")
-                        .HasConstraintName("FK_CourseMaterial_Course_CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("EducationPortal.Data.Entities.Material", "Material")
                         .WithMany()
                         .HasForeignKey("MaterialId")
-                        .HasConstraintName("FK_CourseMaterial_Material_MaterialId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

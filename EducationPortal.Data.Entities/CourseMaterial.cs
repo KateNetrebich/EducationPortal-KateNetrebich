@@ -6,6 +6,10 @@ namespace EducationPortal.Data.Entities
 {
     public class CourseMaterial
     {
+        public CourseMaterial()
+        {
+
+        }
         public CourseMaterial(int courseId, int materialId)
         {
             CourseId = courseId;

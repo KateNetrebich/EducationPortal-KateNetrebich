@@ -36,7 +36,7 @@ namespace EducationPortal.Application.Service
                 Role = request.Role
             };
 
-            await _repository.CreateAsync(user);
+            await _repository.CreatAsync(user);
             return user;
         }
 
@@ -59,11 +59,6 @@ namespace EducationPortal.Application.Service
         {
             var user = await _repository.FindAsync(currentUser.Id);
             user.Username = request.Username ?? user.Username;
-            user.PasswordHash = GetPasswordHash(request.Password) ?? user.PasswordHash;
-            if (request.Role != null)
-            {
-                throw new Exception();
-            }
             return await _repository.SaveAsync(user);
         }
     }

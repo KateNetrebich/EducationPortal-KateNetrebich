@@ -16,36 +16,27 @@ namespace EducationPortal.Persistence.DbRepository
         {
             _dbContext = dbContext;
         }
-        public async Task CreateAsync(Material entity)
+        public async Task CreatAsync(Material entity)
         {
             await _dbContext.AddAsync(entity);
             await _dbContext.SaveChangesAsync();
         }
 
-        public async void DeleteAsync(Material entity)
+        public async Task DeleteAsync(Material entity)
         {
-            try
-            {
-                _dbContext.Remove(entity);
+             _dbContext.Remove(entity);
                 await _dbContext.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                if (!(ex is InvalidOperationException) && !(ex is DbUpdateConcurrencyException))
-                {
-                    throw ex;
-                }
-            }
+            
         }
 
         public async Task<Material> FindAsync(int id)
         {
-            return await _dbContext.BookMaterials.Where(b => b.Id == id).Include(x=>x.Courses).FirstOrDefaultAsync() ?? throw new Exception();
+            return await _dbContext.BookMaterials.Where(b => b.Id == id).Include(x=>x.Courses).FirstOrDefaultAsync();
         }
 
-        public async Task<List<Material>> GetAsync()
+        public Task<List<Material>> GetAsync(int pageNumber , int pageSize)
         {
-            return await _dbContext.Materials.Include(x=>x.Courses).ToListAsync();
+            return _dbContext.Materials.Include(x=>x.Courses).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
         }
 
         public async Task<Material> SaveAsync(Material entity)
@@ -53,10 +44,7 @@ namespace EducationPortal.Persistence.DbRepository
             var material = await FindAsync(entity.Id);
             material.Name = entity.Name ?? material.Name;
             material.Description = entity.Description ?? material.Description;
-            if (entity.Description != null)
-            {
-                throw new Exception();
-            }
+           
             _dbContext.Update(material);
             await _dbContext.SaveChangesAsync();
             return material;

@@ -1,6 +1,7 @@
 ﻿using EducationPortal.Application.Model;
 using EducationPortal.Application.Service;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace EducationPortal.Presentation
@@ -9,10 +10,12 @@ namespace EducationPortal.Presentation
     {
         private ICourseService _service;
         private IMaterialService _materialService;
+        private ICourseResultService _courseResultService;
         public CoursesListController(ICourseService service, IMaterialService materialService)
         {
             _service = service;
             _materialService = materialService;
+            //_courseResultService = courseResultService;
         }
         public async Task Process()
         {
@@ -26,6 +29,7 @@ namespace EducationPortal.Presentation
                 Console.WriteLine("3.Display Course");
                 Console.WriteLine("4.Take a course");
                 Console.WriteLine("5.Return");
+                Console.WriteLine("6.Exit");
                 Console.WriteLine();
 
                 var action = Console.ReadLine();
@@ -34,24 +38,26 @@ namespace EducationPortal.Presentation
                 {
                     case "1":
                         Console.WriteLine("All available courses");
-                        PrintAll();
+                        await PrintAll();
                         break;
                     case "2":
-                        CreateNewCourse();
+                        await CreateNewCourse();
                         break;
                     case "3":
-                        DisplayCourse();
+                        await DisplayCourse ();
                         break;
                     case "4":
-
+                        await TakeACourse ();
                         break;
                     case "5":
                         return;
+                    case "6":
+                        break;
                 }
             }
         }
 
-        public async void PrintAll()
+        public async Task PrintAll()
         {
             var all = await _service.GetAll();
             for (int i = 0; i < all.Count; i++)
@@ -61,7 +67,7 @@ namespace EducationPortal.Presentation
             }
         }
 
-        public void CreateNewCourse()
+        public async Task CreateNewCourse()
         {
             CreateCourseRequest course = new CreateCourseRequest();
             Console.WriteLine("Input Course Name");
@@ -69,12 +75,12 @@ namespace EducationPortal.Presentation
             Console.WriteLine("Input Description");
             course.Description = Console.ReadLine();
 
-            _service.CreateCourse(course);
+            await _service.CreateCourse(course);
         }
 
-        public async void DisplayCourse()
+        public async Task DisplayCourse()
         {
-            PrintAll();
+            await PrintAll();
             Console.BackgroundColor = ConsoleColor.Red;
             Console.WriteLine("Choose Course for editing");
             Console.ResetColor();
@@ -99,13 +105,38 @@ namespace EducationPortal.Presentation
             }
         }
 
-        public async void TakeACourse()
+        public async  Task TakeACourse()
         {
-            PrintAll();
+            await PrintAll();
+            Console.WriteLine();
+            Console.BackgroundColor = ConsoleColor.Red;
             Console.WriteLine("Choose course");
+            Console.ResetColor();
             var courseIndex = GetIntInput();
             var list = await _service.GetAll();
-            var course = list[courseIndex - 1];
+            var course =  list[courseIndex - 1];
+            var materials = course.Materials;
+            for (int i = 0; i < materials.Count; i++)
+            {
+                var item = materials[i];
+                Console.WriteLine($"{i + 1}.Name:{item.Name}\n Description:{item.Description}");
+            }
+            Console.WriteLine();
+            Console.BackgroundColor = ConsoleColor.Red;
+            Console.WriteLine("Press Enter to ended this course");
+            Console.ResetColor();
+            string key = Console.ReadKey().Key.ToString();
+            if (key == "")
+            {
+                Console.WriteLine("You did not press enter.");
+            }
+            else
+            {
+                Console.BackgroundColor = ConsoleColor.Green;
+                Console.WriteLine("You have completed the course!");
+                Console.ResetColor();
+            }
+                
         }
     }
 }

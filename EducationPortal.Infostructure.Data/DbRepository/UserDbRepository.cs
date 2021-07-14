@@ -18,33 +18,25 @@ namespace EducationPortal.Persistence.DbRepository
             _dbContext = dbContext;
         }
 
-        public async Task CreateAsync(User entity)
+        public async Task CreatAsync(User entity)
         {
             await _dbContext.AddAsync(entity);
             await _dbContext.SaveChangesAsync();
         }
 
-        public async void DeleteAsync(User entity)
+        public async Task DeleteAsync(User entity)
         {
-            try
-            {
-                _dbContext.Remove(entity);
-                await _dbContext.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                if (!(ex is InvalidOperationException) && !(ex is DbUpdateConcurrencyException))
-                {
-                    throw ex;
-                }
-            }
+
+            _dbContext.Remove(entity);
+            await _dbContext.SaveChangesAsync();
+
         }
 
         public async void Delete(int entityId)
         {
             try
             {
-                var user = new User { Id = entityId};
+                var user = new User { Id = entityId };
                 _dbContext.Remove(user);
                 await _dbContext.SaveChangesAsync();
             }
@@ -59,7 +51,7 @@ namespace EducationPortal.Persistence.DbRepository
 
         public Task<User> FindAsync(int id)
         {
-           return _dbContext.Users.Where(u => u.Id == id).FirstOrDefaultAsync() ?? throw new Exception();
+            return _dbContext.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
         }
 
         public Task<User> FindByUserNameAsync(string username)
@@ -69,9 +61,9 @@ namespace EducationPortal.Persistence.DbRepository
                .FirstOrDefaultAsync();
         }
 
-        public async Task<List<User>> GetAsync()
+        public  Task<List<User>> GetAsync(int pageNumber, int pageSize)
         {
-            return await _dbContext.Users.ToListAsync();
+            return _dbContext.Users.Include(x=>x.Id).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
         }
 
         public async Task<User> SaveAsync(User entity)
@@ -79,11 +71,8 @@ namespace EducationPortal.Persistence.DbRepository
             var user = await FindAsync(entity.Id);
             user.Username = entity.Username ?? user.Username;
             user.PasswordHash = entity.PasswordHash ?? user.PasswordHash;
-            if (entity.Role != null)
-            {
-                throw new Exception();
-            }
-             _dbContext.Update(user);
+
+            _dbContext.Update(user);
             await _dbContext.SaveChangesAsync();
             return user;
         }

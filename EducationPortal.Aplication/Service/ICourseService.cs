@@ -7,7 +7,7 @@ namespace EducationPortal.Application.Service
 {
     public interface ICourseService
     {
-        Task CreateCourse(CreateCourseRequest request);
+        Task<Course> CreateCourse(CreateCourseRequest request);
         Task<List<Course>> GetAll();
         Task<Course> AddMaterial(Course course, Material material);
         Task<Course> GetById(int courseId);

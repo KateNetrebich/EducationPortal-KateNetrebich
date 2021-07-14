@@ -20,7 +20,7 @@ namespace EducationPortal.Presentation
             _course = course;
         }
 
-        public Task Process()
+        public async Task Process()
         {
             while (true)
             {
@@ -29,28 +29,32 @@ namespace EducationPortal.Presentation
                 Console.ResetColor();
                 Console.WriteLine("1.Print Course Material");
                 Console.WriteLine("2.Add new materials");
-                Console.WriteLine("3.Add existing materials");
-                Console.WriteLine("4.Return");
+                //Console.WriteLine("3.Add existing materials");
+                Console.WriteLine("3.Return");
+                Console.WriteLine("4.Exit");
 
                 var action = Console.ReadLine();
                 Console.Clear();
                 switch (action)
                 {
                     case "1":
-                        PrintMyMaterials();
+                        await PrintMyMaterials();
                         break;
                     case "2":
-                        AddNewMaterial();
+                        await AddNewMaterial();
+                        break;
+                    case "":
                         break;
                     case "3":
-
+                        return;
+                    case "4":
                         break;
                 }
             }
 
         }
 
-        private void PrintMyMaterials()
+        public async Task PrintMyMaterials()
         {
             var materials = _materialService.GetByCourse(_course).ToList();
             for (int i = 0; i < materials.Count; i++)
@@ -60,7 +64,7 @@ namespace EducationPortal.Presentation
             }
         }
 
-        private async void AddNewMaterial()
+        private async Task AddNewMaterial()
         {
             var material = await _materialController.Process();
             _course = _service.AddMaterial(_course, material).Result;

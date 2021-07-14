@@ -27,7 +27,7 @@ namespace EducationPortal.Application.Service
                     URL = articleRequest.URL,
                     PublicationDate =articleRequest.PublicationDate
                 };
-                await _repository.CreateAsync(article);
+                await _repository.CreatAsync(article);
                 return article;
             }
             if(request is CreateVideoRequest)
@@ -41,7 +41,7 @@ namespace EducationPortal.Application.Service
                     Duration = videoRequest.Duration,
                     Quality = videoRequest.Quality
                 };
-                await _repository.CreateAsync(video);
+                await _repository.CreatAsync(video);
                 return video;
             }
             if(request is CreateBookRequest)
@@ -56,7 +56,7 @@ namespace EducationPortal.Application.Service
                     PageNumber = bookRequest.PageNumber,
                     YearOfPublication = bookRequest.YearOfPublication
                 };
-                await _repository.CreateAsync(book);
+                await _repository.CreatAsync(book);
                 return book;
             }
             throw new NotImplementedException();

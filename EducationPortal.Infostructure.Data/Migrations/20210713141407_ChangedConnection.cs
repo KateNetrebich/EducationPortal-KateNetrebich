@@ -2,7 +2,7 @@
 
 namespace EducationPortal.Persistence.Migrations
 {
-    public partial class Changes : Migration
+    public partial class ChangedConnection : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

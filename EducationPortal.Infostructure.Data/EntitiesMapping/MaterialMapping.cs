@@ -1,9 +1,6 @@
 ﻿using EducationPortal.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EducationPortal.Persistence.EntitiesMapping
 {
@@ -13,8 +10,7 @@ namespace EducationPortal.Persistence.EntitiesMapping
         {
             builder.ToTable("Materials", "sch");
 
-            builder.HasKey(x => x.Id)
-                .IsClustered();
+            builder.HasKey(x => x.Id).IsClustered();
 
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
 

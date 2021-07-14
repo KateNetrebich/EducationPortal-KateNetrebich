@@ -17,32 +17,33 @@ namespace EducationPortal.Application.Service
             _repository = repository;
         }
 
-        public async Task AddCourse(User user, Course course)
+        public async Task AddCourseResult(User user, Course course)
         {
             var courseResult = new CourseResult
             {
                 UserId = user.Id,
                 CourseId = course.Id
             };
-            _repository.CreateAsync(courseResult);
+            await _repository.CreatAsync(courseResult);
         }
 
         public async Task<List<CourseResultInfo>> GetByUser()
         {
             throw new Exception();
-            //return await _repository.GetAsync()
-            //    .Where(result => result.StudentName == user.Username)
-            //    .Select(async result =>
-            //    {
-            //        var course = await courseService.GetById(result.CourseId);
-            //        return new CourseResultInfo
-            //        {
-            //            Result = result,
-            //            Course = course
-            //        };
-            //    }).;
+            return await _repository.GetAsync(1, 10)
+                .Where(result => result.StudentName == user.Username)
+                .Select(async result =>
+                {
+                    var course = await courseService.GetById(result.CourseId);
+                    return new CourseResultInfo
+                    {
+                        Result = result,
+                        Course = course
+                    };
+                });
         }
     }
 
 }
+
 
