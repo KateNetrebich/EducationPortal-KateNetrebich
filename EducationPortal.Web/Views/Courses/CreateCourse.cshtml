@@ -1,13 +1,18 @@
 ﻿@{
     ViewData["Title"] = "Courses/Create";
 }
+
 <h3>Create New Course</h3>
 <form method="post">
     <div class="form-group">
         <label for="Name">Course Name</label>
-        <input name ="name" type="text" class="form-control" id="courseName">
+        <input name="name" type="text" class="form-control" id="courseName">
         <label for="Description">Course Description</label>
-        <input name ="description" type="text" class="form-control" id="courseDescription">
+        <input name="description" type="text" class="form-control" id="courseDescription">
+        <label for="Skills">Skills that the user will acquire after completing the course</label>
+        <input name="skills" type="text" class="form-control" id="courseSkills">
+        <label for="grade">Input grade that the user will acquire after completing the course</label>
+        <input name="grade" type="number" class="form-control" id="courseGrade">
     </div>
     <button type="submit" class="btn btn-primary">Create</button>
 </form>

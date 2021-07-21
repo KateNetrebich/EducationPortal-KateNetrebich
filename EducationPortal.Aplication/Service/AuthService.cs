@@ -2,6 +2,7 @@
 using EducationPortal.Application.Model;
 using EducationPortal.Application.Repositories;
 using EducationPortal.Models;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -10,30 +11,23 @@ namespace EducationPortal.Application.Service
     public class AuthService : IAuthService
     {
         private IUserRepository _repository;
-        public AuthService(IUserRepository repository)
+        protected GetPasswordHash passwordHash;
+        private readonly ILogger _logger;
+
+        public AuthService(IUserRepository repository, GetPasswordHash getPasswordHash, ILogger<AuthService> logger)
         {
             _repository = repository;
+            passwordHash = getPasswordHash;
+            _logger = logger;
         }
-        protected string GetPasswordHash(string password)
-        {
-            string hash = null;
-            try
-            {
-                hash = BCrypt.Net.BCrypt.EnhancedHashPassword(password, HashType.SHA384, workFactor: 11);
-                return hash;
-            }
-            catch
-            {
-                return hash;
-            }
-        }
+        
         public async Task<User> Register(RegisterRequest request)
         {
             var user = new User
             {
                 Username = request.Username,
-                PasswordHash = GetPasswordHash(request.Password),
-                Role = request.Role
+                Password = passwordHash.PasswordHash(request.Password),
+                //Role = request.Role
             };
 
             await _repository.CreatAsync(user);
@@ -43,14 +37,10 @@ namespace EducationPortal.Application.Service
         public async Task<User> SignIn(SignInRequest request)
         {
             var user = await _repository.FindByUserNameAsync(request.Username);
-            if (user == null)
-            {
-                throw new Exception("wrong UserName or password try again");
-            }
-            var isValid = BCrypt.Net.BCrypt.EnhancedVerify(request.Password, user.PasswordHash, HashType.SHA384);
+            var isValid = BCrypt.Net.BCrypt.EnhancedVerify(request.Password, user.Password, HashType.SHA384);
             if (!isValid)
             {
-                throw new Exception("wrong UserName or password try again");
+                _logger.LogError("Имя пользователя или пароль были введены неправильно");
             }
             return user;
         }

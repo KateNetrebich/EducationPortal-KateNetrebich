@@ -16,19 +16,10 @@ namespace EducationPortal.Persistence.EntitiesMapping
 
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
 
-            builder.Property(x => x.Username)
-               .HasMaxLength(256)
-               .IsUnicode()
-               .HasColumnName("UserName")
-               .IsRequired();
+            builder.HasIndex(u => u.Username)
+                .IsUnique();
 
-            builder.Property(x => x.Role)
-                .HasMaxLength(256)
-                .IsUnicode()
-                .HasColumnName("Role")
-                .IsRequired();
-
-            builder.Property(x => x.PasswordHash)
+            builder.Property(x => x.Password)
                 .HasMaxLength(256)
                 .IsUnicode()
                 .HasColumnName("PasswordHash");

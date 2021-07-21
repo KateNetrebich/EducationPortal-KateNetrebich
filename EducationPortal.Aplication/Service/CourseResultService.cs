@@ -1,4 +1,5 @@
-﻿using EducationPortal.Application.Repositories;
+﻿using EducationPortal.Application.Model;
+using EducationPortal.Application.Repositories;
 using EducationPortal.Data.Entities;
 using EducationPortal.Models;
 using System;
@@ -8,39 +9,32 @@ using System.Threading.Tasks;
 
 namespace EducationPortal.Application.Service
 {
-    public class CourseResultService
+    public class CourseResultService : ICourseResultService
     {
         private ICourseResultRepository _repository;
-        private ICourseService courseService;
         public CourseResultService(ICourseResultRepository repository)
         {
             _repository = repository;
         }
 
-        public async Task AddCourseResult(User user, Course course)
+        public async Task<CourseResult> AddCourseResult(CreateCourseResultRequest request)
         {
             var courseResult = new CourseResult
             {
-                UserId = user.Id,
-                CourseId = course.Id
+                UserId = request.UserId,
+                CourseId = request.CourseId,
+                CourseDateTime = request.CourseDateTime,
+                Condition = request.Condition
             };
             await _repository.CreatAsync(courseResult);
+            return courseResult;
         }
 
-        public async Task<List<CourseResultInfo>> GetByUser()
+
+        public async Task<List<CourseResult>> GetByUser(int userId)
         {
-            throw new Exception();
-            return await _repository.GetAsync(1, 10)
-                .Where(result => result.StudentName == user.Username)
-                .Select(async result =>
-                {
-                    var course = await courseService.GetById(result.CourseId);
-                    return new CourseResultInfo
-                    {
-                        Result = result,
-                        Course = course
-                    };
-                });
+            return await _repository.GetByUser(userId);
+            
         }
     }
 

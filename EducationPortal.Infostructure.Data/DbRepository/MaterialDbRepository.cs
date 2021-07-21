@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EducationPortal.Persistence.DbRepository
 {
-    public class MaterialDbRepository : IMaterialRepository
+    public class MaterialDbRepository : IRepository<Material>
     {
         protected EducationPortalDbContext _dbContext;
         public MaterialDbRepository(EducationPortalDbContext dbContext)
@@ -40,14 +40,10 @@ namespace EducationPortal.Persistence.DbRepository
         }
 
         public async Task<Material> SaveAsync(Material entity)
-        {
-            var material = await FindAsync(entity.Id);
-            material.Name = entity.Name ?? material.Name;
-            material.Description = entity.Description ?? material.Description;
-           
-            _dbContext.Update(material);
+        {  
+            _dbContext.Update(entity);
             await _dbContext.SaveChangesAsync();
-            return material;
+            return entity;
         }
     }
 }

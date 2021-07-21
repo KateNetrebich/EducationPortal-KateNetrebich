@@ -2,8 +2,10 @@
 using EducationPortal.Data.Entities;
 using EducationPortal.Models;
 using EducationPortal.Persistence.Contexts;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace EducationPortal.Persistence.DbRepository
@@ -21,35 +23,14 @@ namespace EducationPortal.Persistence.DbRepository
             await _dbContext.AddAsync(entity);
             await _dbContext.SaveChangesAsync();
         }
-        private CourseResult CreatCourseResult(Course course, User user, CourseResultCondition condition)
-        {
-            return new CourseResult
-            {
-                UserId = user.Id,
-                CourseId = course.Id,
-                CourseDateTime = DateTime.Now,
-                Condition = condition,
-            };
-        }
 
-        public Task DeleteAsync(CourseResult entity)
+        public async Task<List<CourseResult>> GetByUser(int userId)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<CourseResult> FindAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<CourseResult>> GetAsync(int pageNumber, int pageSize)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<CourseResult> SaveAsync(CourseResult entity)
-        {
-            throw new NotImplementedException();
+            return await _dbContext.CourseResults
+                .Where(u => u.UserId == userId)
+                .Include(x => x.User)
+                .Include(x => x.Course)
+                .ToListAsync();
         }
     }
 }

@@ -3,6 +3,7 @@
 }
 <h3>Add new article to course</h3>
 <form method="post">
+    <input type="hidden" name="courseId" value="@ViewBag.courseId" />
     <div class="form-group">
         <label for="Name">Article Name</label>
         <input name="name" type="text" class="form-control" id="articleName">
@@ -10,7 +11,7 @@
         <input name="description" type="text" class="form-control" id="articleDescription">
         <label for="url">URL</label>
         <input name="url" type="text" class="form-control" id="articleUrl">
-        <label for="PublicationDate">Article Description</label>
+        <label for="PublicationDate">Article Publication Date</label>
         <input name="date" type="date" class="form-control" id="articleDate">
     </div>
     <button type="submit" class="btn btn-primary">Add to course</button>

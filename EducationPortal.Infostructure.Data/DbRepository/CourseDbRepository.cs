@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EducationPortal.Persistence.DbRepository
 {
-    public class CourseDbRepository : ICourseRepository
+    public class CourseDbRepository : IRepository<Course>
     {
         protected EducationPortalDbContext _dbContext;
         public CourseDbRepository(EducationPortalDbContext dbContext)

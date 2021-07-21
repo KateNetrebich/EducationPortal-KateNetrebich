@@ -18,7 +18,9 @@ namespace EducationPortal.Persistence.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CourseName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    Skills = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    Garde = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -34,7 +36,8 @@ namespace EducationPortal.Persistence.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    URL = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -49,9 +52,8 @@ namespace EducationPortal.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Role = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false)
+                    Username = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    PasswordHash = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -65,8 +67,7 @@ namespace EducationPortal.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
-                    URL = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    PublicationDate = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false)
+                    PublicationDate = table.Column<DateTime>(type: "datetime2", maxLength: 256, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -89,7 +90,7 @@ namespace EducationPortal.Persistence.Migrations
                     Id = table.Column<int>(type: "int", nullable: false),
                     Author = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PageNumber = table.Column<int>(type: "int", nullable: false),
-                    YearOfPublication = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false)
+                    YearOfPublication = table.Column<DateTime>(type: "datetime2", maxLength: 256, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -160,7 +161,6 @@ namespace EducationPortal.Persistence.Migrations
                 {
                     UserId = table.Column<int>(type: "int", nullable: false),
                     CourseId = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
                     CourseDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Condition = table.Column<int>(type: "int", nullable: false)
                 },
@@ -194,6 +194,14 @@ namespace EducationPortal.Persistence.Migrations
                 schema: "sch",
                 table: "CourseResults",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Username",
+                schema: "sch",
+                table: "Users",
+                column: "Username",
+                unique: true,
+                filter: "[Username] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

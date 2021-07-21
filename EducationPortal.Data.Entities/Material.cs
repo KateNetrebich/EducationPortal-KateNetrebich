@@ -9,23 +9,18 @@ namespace EducationPortal.Data.Entities
         {
 
         }
-        public Material(string name, string description)
+        public Material(string name, string description, string url)
         {
             Name = name;
             Description = description;
+            URL = url;
         }
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Поле должно быть установлено")]
-        [StringLength(50, MinimumLength = 1, ErrorMessage = "Длина строки должна быть от 1 до 50 символов")]
-        [DataType(DataType.Text)]
+        
         public string Name { get; set; }
-
-        [Required(ErrorMessage = "Поле должно быть установлено")]
-        [StringLength(256, MinimumLength = 1, ErrorMessage = "Длина строки должна быть от 1 до 256 символов")]
-        [DataType(DataType.Text)]
         public string Description { get; set; }
-
+        public string URL { get; set; }
         public virtual List<Course> Courses { get; set; }
     }
 }

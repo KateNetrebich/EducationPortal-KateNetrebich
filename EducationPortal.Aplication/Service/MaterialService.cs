@@ -9,8 +9,8 @@ namespace EducationPortal.Application.Service
 {
     public class MaterialService : IMaterialService
     {
-        private IMaterialRepository _repository;
-        public MaterialService(IMaterialRepository repository)
+        private IRepository<Material> _repository;
+        public MaterialService(IRepository<Material> repository)
         {
             _repository = repository;
         }
@@ -37,6 +37,7 @@ namespace EducationPortal.Application.Service
                 {
                     Id = videoRequest.Id,
                     Name = videoRequest.Name,
+                    URL=videoRequest.URL,
                     Description = videoRequest.Description,
                     Duration = videoRequest.Duration,
                     Quality = videoRequest.Quality
@@ -52,6 +53,7 @@ namespace EducationPortal.Application.Service
                     Id=bookRequest.Id,
                     Name = bookRequest.Name,
                     Description = bookRequest.Description,
+                    URL = bookRequest.URL,
                     Author = bookRequest.Author,
                     PageNumber = bookRequest.PageNumber,
                     YearOfPublication = bookRequest.YearOfPublication
@@ -62,9 +64,9 @@ namespace EducationPortal.Application.Service
             throw new NotImplementedException();
         }
 
-        public async Task<Material> Get(Material material)
+        public async Task<Material> Get(int id)
         {
-            return await _repository.FindAsync(material.Id);
+            return await _repository.FindAsync(id);
         }
 
         public IEnumerable<Material> GetByCourse(Course course)
@@ -72,5 +74,17 @@ namespace EducationPortal.Application.Service
             return course.Materials;
         }
 
+        public Task<List<Material>> GetAll()
+        {
+            return _repository.GetAsync(1, 10);
+        }
+
+        public async Task<Material> Update(UpdateMaterialRequest request, int id)
+        {
+            var material = await _repository.FindAsync(id+1);
+            material.Name = request.Name ?? material.Name;
+            return await _repository.SaveAsync(material);
+        }
+       
     }
 }

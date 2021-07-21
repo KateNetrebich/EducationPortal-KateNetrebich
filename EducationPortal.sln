@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EducationPortal.Persistence
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EducationPortal.Application", "EducationPortal.Aplication\EducationPortal.Application.csproj", "{97F82862-4665-4013-9348-11C90893F4B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducationPortal.Web", "EducationPortal.Web\EducationPortal.Web.csproj", "{1A29311A-B8DE-465A-944E-2E803C63A084}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EducationPortal.Web", "EducationPortal.Web\EducationPortal.Web.csproj", "{1A29311A-B8DE-465A-944E-2E803C63A084}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducationPortal.WebApi", "EducationPortal.WebApi\EducationPortal.WebApi.csproj", "{33FA5264-45BB-4BA9-BCA7-4B0A1965D21E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{1A29311A-B8DE-465A-944E-2E803C63A084}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A29311A-B8DE-465A-944E-2E803C63A084}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A29311A-B8DE-465A-944E-2E803C63A084}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33FA5264-45BB-4BA9-BCA7-4B0A1965D21E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33FA5264-45BB-4BA9-BCA7-4B0A1965D21E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33FA5264-45BB-4BA9-BCA7-4B0A1965D21E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33FA5264-45BB-4BA9-BCA7-4B0A1965D21E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

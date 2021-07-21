@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<EducationPortal.Data.Entities.Course>
+
 @{
     ViewData["Title"] = "Courses";
 }
@@ -15,11 +16,15 @@
     <tbody>
         @foreach (var course in Model)
         {
-            <tr>
-                <td scope="row">@course.Id</td>
-                <td><a href="./Courses/@course.Id">@course.Name</a></td>
-                <td>@course.Description</td>
-            </tr>
+        <tr>
+            <td scope="row">@course.Id</td>
+            <td><a href="./Courses/@course.Id">@course.Name</a></td>
+            <td>@course.Description</td>
+            <td>
+                <a asp-action="EditCourse" asp-controller="Courses" asp-route-id="@course.Id">Edit</a>
+            </td>
+
+        </tr>
         }
     </tbody>
 </table>

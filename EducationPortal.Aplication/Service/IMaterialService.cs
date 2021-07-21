@@ -7,8 +7,10 @@ namespace EducationPortal.Application.Service
 {
     public interface IMaterialService
     {
-        public Task<Material> CreateMaterial(CreateMaterialRequest request);
-        Task<Material> Get(Material material);
+        Task<Material> CreateMaterial(CreateMaterialRequest request);
+        Task<Material> Get(int materialId);
+        Task<List<Material>> GetAll();
         IEnumerable<Material> GetByCourse(Course course);
+        Task<Material> Update(UpdateMaterialRequest request, int id);
     }
 }

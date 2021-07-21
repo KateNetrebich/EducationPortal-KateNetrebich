@@ -1,0 +1,29 @@
+﻿@model IEnumerable<EducationPortal.Data.Entities.CourseResult>
+@{
+    ViewData["Title"] = "CourseResult";
+}
+
+<h3>User results info</h3>
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Skills</th>
+            <th scope="col">Grade</th>
+            <th scope="col">Condition</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var result in Model)
+        {
+        <tr>
+            <td scope="row">@result.CourseId</td>
+            <td>@result.Course.Name</td>
+            <td>@result.Course.Skills</td>
+            <td>@result.Course.Garde</td>
+            <td>@result.Condition</td>
+        </tr>
+        }
+    </tbody>
+</table>

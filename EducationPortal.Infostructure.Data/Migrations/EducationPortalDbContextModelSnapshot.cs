@@ -34,12 +34,22 @@ namespace EducationPortal.Persistence.Migrations
                         .HasColumnType("nvarchar(256)")
                         .HasColumnName("Description");
 
+                    b.Property<int>("Garde")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(256)
                         .IsUnicode(true)
                         .HasColumnType("nvarchar(256)")
                         .HasColumnName("CourseName");
+
+                    b.Property<string>("Skills")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(256)")
+                        .HasColumnName("Skills");
 
                     b.HasKey("Id")
                         .HasName("PK_CourseId")
@@ -77,9 +87,6 @@ namespace EducationPortal.Persistence.Migrations
                     b.Property<DateTime>("CourseDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
                     b.HasKey("CourseId", "UserId");
 
                     b.HasIndex("UserId");
@@ -108,6 +115,13 @@ namespace EducationPortal.Persistence.Migrations
                         .HasColumnType("nvarchar(256)")
                         .HasColumnName("Name");
 
+                    b.Property<string>("URL")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(256)")
+                        .HasColumnName("URL");
+
                     b.HasKey("Id")
                         .IsClustered();
 
@@ -121,29 +135,22 @@ namespace EducationPortal.Persistence.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(256)")
-                        .HasColumnName("UserName");
-
-                    b.Property<string>("PasswordHash")
+                    b.Property<string>("Password")
                         .HasMaxLength(256)
                         .IsUnicode(true)
                         .HasColumnType("nvarchar(256)")
                         .HasColumnName("PasswordHash");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(256)")
-                        .HasColumnName("Role");
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id")
                         .HasName("PK_UsersId")
                         .IsClustered();
+
+                    b.HasIndex("Username")
+                        .IsUnique()
+                        .HasFilter("[Username] IS NOT NULL");
 
                     b.ToTable("Users", "sch");
                 });
@@ -152,19 +159,11 @@ namespace EducationPortal.Persistence.Migrations
                 {
                     b.HasBaseType("EducationPortal.Data.Entities.Material");
 
-                    b.Property<string>("PublicationDate")
-                        .IsRequired()
+                    b.Property<DateTime>("PublicationDate")
                         .HasMaxLength(256)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(256)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("PublicationDate");
-
-                    b.Property<string>("URL")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(256)")
-                        .HasColumnName("URL");
 
                     b.ToTable("ArticleMaterials", "sch");
                 });
@@ -179,11 +178,10 @@ namespace EducationPortal.Persistence.Migrations
                     b.Property<int>("PageNumber")
                         .HasColumnType("int");
 
-                    b.Property<string>("YearOfPublication")
-                        .IsRequired()
+                    b.Property<DateTime>("YearOfPublication")
                         .HasMaxLength(256)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(256)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("YearOfPublication");
 
                     b.ToTable("BookMaterials", "sch");

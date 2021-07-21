@@ -8,9 +8,9 @@ namespace EducationPortal.Application.Service
 {
     public class CourseService : ICourseService
     {
-        private ICourseRepository _repository;
+        private IRepository<Course> _repository;
 
-        public CourseService(ICourseRepository repository)
+        public CourseService(IRepository<Course> repository)
         {
             _repository = repository;
         }
@@ -20,7 +20,9 @@ namespace EducationPortal.Application.Service
             var course = new Course
             {
                 Name = request.Name,
-                Description = request.Description
+                Description = request.Description,
+                Skills = request.Skills,
+                Garde =request.Grade
             };
             await _repository.CreatAsync(course);
             return course;
@@ -43,9 +45,9 @@ namespace EducationPortal.Application.Service
             return await _repository.FindAsync(courseId);
         }
 
-        public async Task<Course> UpdateCourse(UpdateCourseRequest request, Course courses)
+        public async Task<Course> Update(UpdateCourseRequest request,int id)
         {
-            var course = await _repository.FindAsync(courses.Id);
+            var course = await _repository.FindAsync(id+1);
             course.Name = request.Name ?? course.Name;
             return await _repository.SaveAsync(course);
         }

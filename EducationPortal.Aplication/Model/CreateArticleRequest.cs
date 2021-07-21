@@ -1,10 +1,12 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace EducationPortal.Application.Model
 {
     public class CreateArticleRequest : CreateMaterialRequest
     {
-        public string URL { get; set; }
+        [Required]
+        [DataType(DataType.Date)]
         public DateTime PublicationDate { get; set; }
     }
 }

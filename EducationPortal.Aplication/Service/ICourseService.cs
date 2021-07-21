@@ -11,5 +11,6 @@ namespace EducationPortal.Application.Service
         Task<List<Course>> GetAll();
         Task<Course> AddMaterial(Course course, Material material);
         Task<Course> GetById(int courseId);
+        Task<Course> Update(UpdateCourseRequest request, int id);
     }
 }

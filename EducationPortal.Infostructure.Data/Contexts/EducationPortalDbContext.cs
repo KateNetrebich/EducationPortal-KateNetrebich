@@ -1,6 +1,7 @@
 ﻿using EducationPortal.Data.Entities;
 using EducationPortal.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Protocols;
 using System.Configuration;
 using System.Reflection;
@@ -9,6 +10,7 @@ namespace EducationPortal.Persistence.Contexts
 {
     public class EducationPortalDbContext : DbContext
     {
+        private readonly ILoggerFactory _loggerFactory;
         public EducationPortalDbContext()
         {
 
@@ -24,14 +26,15 @@ namespace EducationPortal.Persistence.Contexts
         public DbSet<ArticleMaterial> ArticleMaterials { get; set; }
 
 
-        public EducationPortalDbContext(DbContextOptions<EducationPortalDbContext> options) : base(options)
+        public EducationPortalDbContext(DbContextOptions<EducationPortalDbContext> options, ILoggerFactory loggerFactory) : base(options)
         {
-
+            _loggerFactory = loggerFactory;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-           
+            base.OnConfiguring(optionsBuilder);
+            optionsBuilder.UseLoggerFactory(_loggerFactory);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

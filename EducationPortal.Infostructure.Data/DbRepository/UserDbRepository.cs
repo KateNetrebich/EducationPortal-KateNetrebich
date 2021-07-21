@@ -26,27 +26,8 @@ namespace EducationPortal.Persistence.DbRepository
 
         public async Task DeleteAsync(User entity)
         {
-
             _dbContext.Remove(entity);
             await _dbContext.SaveChangesAsync();
-
-        }
-
-        public async void Delete(int entityId)
-        {
-            try
-            {
-                var user = new User { Id = entityId };
-                _dbContext.Remove(user);
-                await _dbContext.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                if (!(ex is InvalidOperationException) && !(ex is DbUpdateConcurrencyException))
-                {
-                    throw ex;
-                }
-            }
         }
 
         public Task<User> FindAsync(int id)
@@ -67,28 +48,10 @@ namespace EducationPortal.Persistence.DbRepository
         }
 
         public async Task<User> SaveAsync(User entity)
-        {
-            var user = await FindAsync(entity.Id);
-            user.Username = entity.Username ?? user.Username;
-            user.PasswordHash = entity.PasswordHash ?? user.PasswordHash;
-
-            _dbContext.Update(user);
+        { 
+            _dbContext.Update(entity);
             await _dbContext.SaveChangesAsync();
-            return user;
-        }
-
-        protected string GetPasswordHash(string password)
-        {
-            string hash = null;
-            try
-            {
-                hash = BCrypt.Net.BCrypt.EnhancedHashPassword(password, HashType.SHA384, workFactor: 11);
-                return hash;
-            }
-            catch
-            {
-                return hash;
-            }
+            return entity;
         }
 
     }

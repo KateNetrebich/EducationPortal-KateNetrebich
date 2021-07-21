@@ -1,56 +1,95 @@
 ﻿using EducationPortal.Application.Service;
 using EducationPortal.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace EducationPortal.Web.Controllers
 {
     public class UsersController : Controller
     {
-        public readonly IAuthService authService;
+        private readonly IAuthService authService;
+        private readonly Claims claims;
 
-        public UsersController(IAuthService service)
+        public UsersController(IAuthService service, Claims claims)
         {
             authService = service;
+            this.claims = claims;
         }
 
         [HttpGet("Register")]
-        public async Task<IActionResult> RegisterView()
+        public IActionResult RegisterView()
         {
-            return View("RegisterUser");
+            return View("Register");
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register(string username, string password, string role)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterRequest request)
         {
-            var user = await authService.Register(new RegisterRequest
+
+            if (ModelState.IsValid)
             {
-                Username = username,
-                Password = password,
-                Role = role
-            });
-            Redirect("Courses/Index");
-            return View(user);
+                try
+                {
+                    var user = await authService.Register(request);
+                    if (user != null)
+                    {
+                        await Authenticate(user);
+
+                        return RedirectToAction("Index", "Courses");
+                    }
+                }
+                catch
+                {
+                    ModelState.AddModelError("", "Некорректные логин и(или) пароль, проверьте введенные данные или зарегистрируйтесь");
+                }
+            }
+            return View();
         }
 
         [HttpGet("SignIn")]
-        public async Task<IActionResult> SignInView()
+        public IActionResult SignInView()
         {
             return View("SignIn");
         }
 
         [HttpPost("SignIn")]
-        public async Task<IActionResult> SignIn(string username, string password)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SignIn(SignInRequest request)
         {
-            var user = await authService.SignIn(new SignInRequest
+            if (ModelState.IsValid)
             {
-                Username = username,
-                Password = password
-            });
-            return Redirect("Courses/Index");
+                try
+                {
+                    var user = await authService.SignIn(request);
+                    await Authenticate(user);
+                    return RedirectToAction("Index", "Courses");
+                }
+                catch
+                {
+                    ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+                }
+            }
+            return View();
+        }
+
+        private async Task Authenticate(User user)
+        {
+            ClaimsIdentity id = new ClaimsIdentity(claims.CreateClaims(user), CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
+        }
+
+        [Route("Logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("SignIn", "Users");
         }
     }
 }

@@ -28,6 +28,12 @@ namespace EducationPortal.Persistence.EntitiesMapping
                 .HasColumnName("Description")
                 .IsRequired();
 
+            builder.Property(x => x.Skills)
+                .HasMaxLength(256)
+                .IsUnicode()
+                .HasColumnName("Skills")
+                .IsRequired();
+
             builder.HasMany(x => x.Materials)
                .WithMany(x => x.Courses)
                .UsingEntity<CourseMaterial>(x => x
