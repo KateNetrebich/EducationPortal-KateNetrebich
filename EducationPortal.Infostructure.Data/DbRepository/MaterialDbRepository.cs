@@ -31,7 +31,7 @@ namespace EducationPortal.Persistence.DbRepository
 
         public async Task<Material> FindAsync(int id)
         {
-            return await _dbContext.BookMaterials.Where(b => b.Id == id).Include(x=>x.Courses).FirstOrDefaultAsync();
+            return await _dbContext.Materials.Where(b => b.Id == id).Include(x=>x.Courses).FirstOrDefaultAsync();
         }
 
         public Task<List<Material>> GetAsync(int pageNumber , int pageSize)

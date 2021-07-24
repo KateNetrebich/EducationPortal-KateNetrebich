@@ -5,6 +5,7 @@ using EducationPortal.Data.Entities;
 using EducationPortal.Persistence.Contexts;
 using EducationPortal.Persistence.DbRepository;
 using EducationPortal.Web.Controllers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace EducationPortal.WebApi
 {
@@ -28,11 +31,6 @@ namespace EducationPortal.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(c =>
-            {
-                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod()
-                 .AllowAnyHeader());
-            });
             services.AddDbContext<EducationPortalDbContext>(options =>
                options.UseSqlServer(
                    Configuration.GetConnectionString("EducationPortalDatabase")));
@@ -41,7 +39,8 @@ namespace EducationPortal.WebApi
 
             services.AddTransient<IUserRepository, UserDbRepository>();
             services.AddTransient<GetPasswordHash>();
-            services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<IAuthorizeService, AuthorizeService>();
+
 
             services.AddTransient<IRepository<Course>, CourseDbRepository>();
             services.AddTransient<ICourseService, CourseService>();
@@ -51,18 +50,32 @@ namespace EducationPortal.WebApi
             services.AddTransient<ICourseResultRepository, CourseResultDbRepository>();
             services.AddTransient<ICourseResultService, CourseResultService>();
             services.AddTransient<Claims>();
+            services.AddTransient<TokenManager>();
 
-            services.AddApiVersioning(o =>
-            {
-                o.AssumeDefaultVersionWhenUnspecified = true;
-            });
+            services.AddControllers().AddJsonOptions(x =>
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
-            services.AddControllers();
 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "EducationPortal.WebApi", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description =
+                        "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
             });
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.RequireHttpsMetadata = false;
+                        options.TokenValidationParameters = TokenManager.GetValidator();
+                    });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

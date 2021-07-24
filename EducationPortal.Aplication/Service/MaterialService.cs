@@ -81,7 +81,7 @@ namespace EducationPortal.Application.Service
 
         public async Task<Material> Update(UpdateMaterialRequest request, int id)
         {
-            var material = await _repository.FindAsync(id+1);
+            var material = await _repository.FindAsync(id);
             material.Name = request.Name ?? material.Name;
             return await _repository.SaveAsync(material);
         }

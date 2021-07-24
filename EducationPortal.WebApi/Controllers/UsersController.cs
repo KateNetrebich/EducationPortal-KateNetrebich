@@ -1,15 +1,6 @@
 ﻿using EducationPortal.Application.Service;
 using EducationPortal.Models;
-using EducationPortal.Web.Controllers;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace EducationPortal.WebApi.Controllers
@@ -18,13 +9,11 @@ namespace EducationPortal.WebApi.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IAuthService authService;
-        private readonly Claims claims;
+        private readonly IAuthorizeService authService;
 
-        public UsersController(IAuthService service, Claims claims)
+        public UsersController(IAuthorizeService service)
         {
             authService = service;
-            this.claims = claims;
         }
 
         [HttpPost("Register")]
@@ -34,12 +23,11 @@ namespace EducationPortal.WebApi.Controllers
             return Ok();
         }
 
-        [AllowAnonymous]
         [HttpPost("SignIn")]
-        public async Task<ActionResult> SignIn([FromQuery] SignInRequest request)
+        public ActionResult SignIn([FromQuery] SignInRequest request)
         {
-            var user = await authService.SignIn(request);
-            return Ok(user);
+            var token = authService.SignIn(request);
+            return Ok(token);
         }
     }
 }

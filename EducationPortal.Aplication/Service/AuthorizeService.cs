@@ -4,23 +4,27 @@ using EducationPortal.Application.Repositories;
 using EducationPortal.Models;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace EducationPortal.Application.Service
 {
-    public class AuthService : IAuthService
+    public class AuthorizeService : IAuthorizeService
     {
         private IUserRepository _repository;
         protected GetPasswordHash passwordHash;
         private readonly ILogger _logger;
+        private readonly TokenManager _tokenManager;
 
-        public AuthService(IUserRepository repository, GetPasswordHash getPasswordHash, ILogger<AuthService> logger)
+        public AuthorizeService(IUserRepository repository, GetPasswordHash getPasswordHash, ILogger<AuthorizeService> logger, TokenManager tokenManager)
         {
             _repository = repository;
             passwordHash = getPasswordHash;
             _logger = logger;
+            _tokenManager = tokenManager;
         }
-        
+
         public async Task<User> Register(RegisterRequest request)
         {
             var user = new User
@@ -33,7 +37,7 @@ namespace EducationPortal.Application.Service
             return user;
         }
 
-        public async Task<User> SignIn(SignInRequest request)
+        public async Task<Token> SignIn(SignInRequest request)
         {
             var user = await _repository.FindByUserNameAsync(request.Username);
             var isValid = BCrypt.Net.BCrypt.EnhancedVerify(request.Password, user.Password, HashType.SHA384);
@@ -41,7 +45,7 @@ namespace EducationPortal.Application.Service
             {
                 _logger.LogError("Имя пользователя или пароль были введены неправильно");
             }
-            return user;
+            return _tokenManager.CreateToken(user); ;
         }
 
         public async Task<User> Update(UpdateUserRequest request, User currentUser)

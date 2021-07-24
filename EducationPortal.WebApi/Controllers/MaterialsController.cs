@@ -1,5 +1,6 @@
 ﻿using EducationPortal.Application.Model;
 using EducationPortal.Application.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,6 +12,7 @@ namespace EducationPortal.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class MaterialsController : ControllerBase
     {
         private readonly IMaterialService materialService;
@@ -22,89 +24,57 @@ namespace EducationPortal.WebApi.Controllers
         }
 
         [HttpPost("CreateArticle")]
-        public async Task<ActionResult> CreateArticle([FromRoute] int courseId, [FromRoute] string name, [FromRoute] string description, [FromRoute] string url, [FromRoute] DateTime date)
+        public async Task<ActionResult> CreateArticle([FromRoute] int courseId, [FromQuery] string name, [FromQuery] string description, [FromQuery] string url, [FromQuery] DateTime date)
         {
-            if (ModelState.IsValid)
+            var article = await materialService.CreateMaterial(new CreateArticleRequest
             {
-                try
-                {
-                    var article = await materialService.CreateMaterial(new CreateArticleRequest
-                    {
-                        Name = name,
-                        Description = description,
-                        URL = url,
-                        PublicationDate = date
-                    });
-                    var course = await courseService.GetById(courseId);
-                    await courseService.AddMaterial(course, article);
-                    return Redirect($"/Courses/{courseId}");
-                }
-                catch
-                {
-                    ModelState.AddModelError("", "Проверьте корректность введенных данных");
-                }
-            }
+                Name = name,
+                Description = description,
+                URL = url,
+                PublicationDate = date
+            });
+            var course = await courseService.GetById(courseId);
+            await courseService.AddMaterial(course, article);
             return Ok();
+
         }
 
         [HttpPost("CreateVideo")]
-        public async Task<ActionResult> CreateVideo(int courseId, string name, string description, string duration, string quality, string url)
+        public async Task<ActionResult> CreateVideo([FromRoute] int courseId, [FromQuery] string name, [FromQuery] string description, [FromQuery] string duration, [FromQuery] string quality, [FromQuery] string url)
         {
-            if (ModelState.IsValid)
+            var video = await materialService.CreateMaterial(new CreateVideoRequest
             {
-                try
-                {
-                    var video = await materialService.CreateMaterial(new CreateVideoRequest
-                    {
-                        Name = name,
-                        Description = description,
-                        URL = url,
-                        Duration = duration,
-                        Quality = quality
-                    });
-                    var course = await courseService.GetById(courseId);
-                    await courseService.AddMaterial(course, video);
-                    return Redirect($"/Courses/{courseId}");
-                }
-                catch
-                {
-                    ModelState.AddModelError("", "Проверьте корректность введенных данных");
-                }
-            }
+                Name = name,
+                Description = description,
+                URL = url,
+                Duration = duration,
+                Quality = quality
+            });
+            var course = await courseService.GetById(courseId);
+            await courseService.AddMaterial(course, video);
             return Ok();
+
         }
 
         [HttpPost("CreateBook")]
-        public async Task<ActionResult> CreateBook([FromRoute] int courseId, [FromRoute] string name, [FromRoute] string description, [FromRoute] string author, int pageNumber, [FromRoute] DateTime date, [FromRoute] string url)
+        public async Task<ActionResult> CreateBook([FromRoute] int courseId, [FromQuery] string name, [FromQuery] string description, [FromQuery] string author, [FromQuery] int pageNumber, [FromBody] DateTime date, [FromQuery] string url)
         {
-            if (ModelState.IsValid)
+            var book = await materialService.CreateMaterial(new CreateBookRequest
             {
-                try
-                {
-                    var book = await materialService.CreateMaterial(new CreateBookRequest
-                    {
-                        Name = name,
-                        Description = description,
-                        URL = url,
-                        Author = author,
-                        PageNumber = pageNumber,
-                        YearOfPublication = date
-                    });
-                    var course = await courseService.GetById(courseId);
-                    await courseService.AddMaterial(course, book);
-                    return Redirect($"/Courses/{courseId}");
-                }
-                catch
-                {
-                    ModelState.AddModelError("", "Проверьте корректность введенных данных");
-                }
-
-            }
+                Name = name,
+                Description = description,
+                URL = url,
+                Author = author,
+                PageNumber = pageNumber,
+                YearOfPublication = date
+            });
+            var course = await courseService.GetById(courseId);
+            await courseService.AddMaterial(course, book);
             return Ok();
         }
 
-        [HttpPost("Edit")]
-        public async Task<ActionResult> EditMaterial([FromRoute] int Id, [FromRoute]string name, [FromRoute]string description)
+        [HttpPatch("Edit")]
+        public async Task<ActionResult> EditMaterial([FromRoute] int Id, [FromQuery] string name, [FromQuery] string description)
         {
             var updatedMaterial = await materialService.Update(new UpdateMaterialRequest
             {
