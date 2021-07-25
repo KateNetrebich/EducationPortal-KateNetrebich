@@ -1,0 +1,27 @@
+﻿@model IEnumerable<EducationPortal.Data.Entities.Material>
+@{
+    ViewData["Title"] = "Materials";
+}
+<a href="./Courses/Create">Create New Course</a>
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var material in Model)
+        {
+            <tr>
+                <td scope="row">@material.Id</td>
+                <td><a href="./Materials/@material.Id">@material.Name</a></td>
+                <td>@material.Description</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

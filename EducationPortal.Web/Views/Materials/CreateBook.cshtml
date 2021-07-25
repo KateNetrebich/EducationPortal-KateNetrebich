@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "CreateBook";
+}
+<h3>Add new book to course</h3>
+<form method="post">
+    <input type="hidden" name="courseId" value="@ViewBag.courseId" />
+    <div class="form-group">
+        <label for="Name">Book Name</label>
+        <input name="name" type="text" class="form-control" id="bookName">
+        <label for="Description">Book Description</label>
+        <input name="description" type="text" class="form-control" id="bookDescription">
+        <label for="url">URL</label>
+        <input name="url" type="text" class="form-control" id="articleUrl">
+        <label for="url">Author</label>
+        <input name="author" type="text" class="form-control" id="author">
+        <label for="year of publication">Book Year Of Publication</label>
+        <input name="date" type="date" class="form-control" id="Date">
+    </div>
+    <button type="submit" class="btn btn-primary">Add to course</button>
+</form>

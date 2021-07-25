@@ -1,0 +1,38 @@
+﻿@model EducationPortal.Data.Entities.Course
+@{
+    ViewData["Title"] = Model.Name;
+}
+<h2>@Model.Name</h2>
+<p>@Model.Description</p>
+<p>@Model.Skills</p>
+
+<a href="/Materials/CreateArticle?courseId=@Model.Id">Add Article</a>
+<a href="/Materials/CreateVideo?courseId=@Model.Id">Add Video</a>
+<a href="/Materials/CreateBook?courseId=@Model.Id">Add Book</a>
+
+<table class="table">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">URL</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var material in Model.Materials)
+        {
+        <tr>
+            <td scope="row">@material.Id</td>
+            <td>@material.Name</td>
+            <td>@material.Description</td>
+            <td><a href="@material.URL">@material.URL</a></td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+<form method="post" action="/Courses/@Model.Id/Take">
+    <button type="submit" class="btn btn-primary">Take a course</button>
+</form>
